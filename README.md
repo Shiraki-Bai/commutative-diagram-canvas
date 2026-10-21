@@ -6,8 +6,8 @@
 
 从仓库的 GitHub Releases 下载：
 
-- `交换图画布-HanaApp-1.5.2.zip`：在 Hana 的扩展管理中安装并确认权限。
-- `交换图画布-1.5.2.html`：直接用 Edge / Chrome 打开，无需 Python、Hana 或本机 LaTeX。
+- `commutative-diagram-canvas-HanaApp-1.5.2.zip`：在 Hana 的扩展管理中安装并确认权限。
+- `commutative-diagram-canvas-1.5.2.html`：直接用 Edge / Chrome 打开，无需 Python、Hana 或本机 LaTeX。
 
 节点／箭头通过鼠标编辑，支持弯箭头、自环、双线／三线共用头部、单射和满射。可编辑并应用受支持的 tikz-cd 源码，导出带 tikz 围栏的完整代码。
 
@@ -32,9 +32,10 @@ dist/                        # 本机构建产物，Git 忽略；发布时作为
 ```sh
 python diagram-drawer/build.py
 python diagram-drawer/build-hana.py
+python scripts/build-checksums.py
 ```
 
-版本取自 `commutative-diagram-app/manifest.json`，两份产物写入 `dist/`。运行成品不需要 Python。应用程序与安装包不携带本机账号、令牌或浏览器测试数据。
+版本取自 `commutative-diagram-app/manifest.json`，两份产物写入 `dist/`，校验脚本另生成英文发布文件名及 `SHA256SUMS.txt`，避免 GitHub 改写中文附件名。运行成品不需要 Python。应用程序与安装包不携带本机账号、令牌或浏览器测试数据。
 
 ## 测试
 

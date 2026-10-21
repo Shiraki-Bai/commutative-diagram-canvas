@@ -1,0 +1,35 @@
+# Build and release output
+/dist/
+/*.zip
+/*.hanaapp
+/diagram-drawer/交换图画布-*.html
+# Browser tests and local state
+**/test-profile*/
+**/edge-*-profile*/
+**/tex-test-*/
+**/.test-artifacts/
+**/user-data*/
+**/tex-export-test.*
+# Dependencies and caches
+node_modules/
+__pycache__/
+*.py[cod]
+.cache/
+*.log
+*.tmp
+# Local secrets/configuration: never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*credentials*.json
+auth.json
+hosts.yml
+config.local.*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

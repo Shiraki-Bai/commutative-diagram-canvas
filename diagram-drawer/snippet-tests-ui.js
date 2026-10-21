@@ -1,0 +1,6 @@
+(()=>{const results=[];const check=(v,name)=>{if(!v)throw Error(name);results.push(name);};
+$('nodeName').value='@a';$('nodeName').setSelectionRange(2,2);$('nodeName').dispatchEvent(new Event('input'));check($('nodeName').value==='\\alpha','automatic Greek snippet');
+$('nodeName').value='//';$('nodeName').setSelectionRange(2,2);$('nodeName').dispatchEvent(new Event('input'));check($('nodeName').value==='\\frac{}{}','fraction snippet');check($('nodeName').selectionStart===6,'first tabstop');$('nodeName').dispatchEvent(new KeyboardEvent('keydown',{key:'Tab',cancelable:true}));check($('nodeName').selectionStart===8,'second tabstop');
+const regex=SnippetAdapter.parseConfig('[{trigger:/([A-Za-z])(\\d)/,replacement:"[[0]]_[[1]]",options:"rmA"}]');check(regex.rules.length===1,'data regex parsed');const match=regex.rules[0].match.exec('x2');check(SnippetAdapter.replacement(regex.rules[0].replacement,match).text==='x_2','capture zero indexing');
+const rejected=SnippetAdapter.parseConfig('[{trigger:"evil",replacement:()=>alert(1),options:"mA"},{trigger:"mirror",replacement:"$0$0",options:"mA"}]');check(!rejected.rules.length&&rejected.warnings.length===2,'functions and mirrors rejected');
+return {snippetChecks:results.length,results};})()

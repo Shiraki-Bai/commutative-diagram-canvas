@@ -1,13 +1,15 @@
 # 交换图画布 · Commutative Diagram Canvas
 
-离线可视化编辑交换图，提供 Hana App 与单文件 HTML 两种交付。当前版本 **1.5.2**。
+离线可视化编辑交换图，提供 Hana App 与单文件 HTML 两种交付。当前统一版本 **1.6.0**，包含此前开发编号 1.8.1 的完整功能，并未回退。GitHub 已发布版本以 Releases 页面为准。
 
 ## 使用
 
 从仓库的 GitHub Releases 下载：
 
-- `commutative-diagram-canvas-HanaApp-1.5.2.zip`：在 Hana 的扩展管理中安装并确认权限。
-- `commutative-diagram-canvas-1.5.2.html`：直接用 Edge / Chrome 打开，无需 Python、Hana 或本机 LaTeX。
+- `commutative-diagram-canvas-HanaApp-1.6.0.zip`：在 Hana 的扩展管理中安装并确认权限。
+- `commutative-diagram-canvas-1.6.0.html`：直接用 Edge / Chrome 打开，无需 Python、Hana 或本机 LaTeX。
+
+左下角“保存”弹出中央命名框，“载入”弹出与源码、参数面板左下角对齐的名称搜索列表。可命名保存完整可编辑交换图，并点击已存记录恢复；见 [保存与加载说明](docs/SAVED-DIAGRAMS.md)。HTML 使用浏览器存储，Hana App 使用应用存储，两端不自动同步。载入列表右侧叉号可删除保存记录，当前会话可按 Ctrl+Z 按顺序撤销；刷新图标位于载入面板右上角。
 
 节点／箭头通过鼠标编辑，支持弯箭头、自环、双线／三线共用头部、单射和满射。可编辑并应用受支持的 tikz-cd 源码，导出带 tikz 围栏的完整代码。
 
@@ -18,7 +20,7 @@
 ```text
 diagram-drawer/               # 画布源码、构建与测试
 commutative-diagram-app/      # Hana App manifest、入口与随包资源
-releases/v1.5.2.md            # 对应标签及 Release 的中文公告
+releases/v1.6.0.md            # 当前统一版本的中文累计更新公告
 docs/                        # 架构、版本和第三方说明
 dist/                        # 本机构建产物，Git 忽略；发布时作为附件上传
 ```
@@ -46,6 +48,7 @@ node diagram-drawer/parser-tests.cjs
 node diagram-drawer/geometry-tests.cjs
 node diagram-drawer/joint-tests.cjs
 node diagram-drawer/test-hana-entry.cjs
+node diagram-drawer/library-tests.cjs
 node diagram-drawer/test.cjs
 python scripts/scan-secrets.py
 ```
@@ -62,6 +65,6 @@ python scripts/scan-secrets.py
 
 ## 发布与许可
 
-首次入库从可验证的 **v1.5.2** 开始，不伪造此前 Git 历史，不补写未授权的历史 Releases。后续遵循 [版本规则](docs/VERSIONING.md)。
+首次入库从可验证的 **v1.5.2** 开始，不伪造此前 Git 历史，不补写未授权的历史 Releases。当前完整功能按授权统一为 **1.6.0**。以后默认只递增末位：**1.6.0 → 1.6.1 → 1.6.2**，只有用户明确要求才改变中间位；见 [版本规则](docs/VERSIONING.md)。
 
-此仓库按用户要求为私有；项目自有代码暂未额外授予开源许可。第三方资源保留自身许可，见 [第三方说明](docs/THIRD_PARTY.md) 和 App 随包的 `ui/licenses/`。
+仓库按用户授权公开；公开源码不等于额外授予开源使用许可，项目自有代码暂未选择新的开源许可证。第三方资源保留自身许可，见 [第三方说明](docs/THIRD_PARTY.md) 和 App 随包的 `ui/licenses/`。

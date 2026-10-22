@@ -16,6 +16,6 @@ export default {
    }
   });
   if(registration?.ready)await registration.ready;
-  await context.logger.info('交换图画布 1.5.2 已载入');
+  await context.logger.info('交换图画布 1.6.0 已载入');
  }
 };

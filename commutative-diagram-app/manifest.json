@@ -2,10 +2,10 @@
   "manifestVersion": 2,
   "id": "commutative-diagram",
   "name": "交换图画布",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "entry": "index.js",
   "icon": "ui/assets/cover.svg",
-  "description": "离线可视化绘制交换图，支持节点、弯箭头、自环、LaTeX snippets 和 tikz-cd 源码双向编辑。Ctrl+Q 删除选中对象。",
+  "description": "离线可视化绘制交换图，支持命名保存与加载、弯箭头、自环、LaTeX snippets 和 tikz-cd 源码双向编辑。",
   "minAppVersion": "0.1013.0",
   "capabilities": ["app/tools.expose-to-model", "app/windows.manage", "app/ui.clipboard-write"],
   "contributes": {

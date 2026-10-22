@@ -1,0 +1,24 @@
+const assert=require('assert'),L=require('./diagram-library');
+class MemoryStorage{constructor(){this.map=new Map();}get length(){return this.map.size;}key(i){return [...this.map.keys()][i]??null;}getItem(k){return this.map.get(k)??null;}setItem(k,v){this.map.set(k,String(v));}removeItem(k){this.map.delete(k);}}
+const model={nodes:[{id:'a',name:'A',row:-1,col:3}],edges:[{id:'loop',from:'a',to:'a',type:'triple',upper:'f_i',lower:'g',bend:0,loopSide:'right'}],params:{cells:'small',labels:'footnotesize',width:.7,row:77,column:88}};
+const entry={schema:1,id:'d-test',name:'测试图',createdAt:1,updatedAt:2,snapshot:L.snapshot(model,{x:12,y:34,zoom:1.4},{dirty:true,text:'UNAPPLIED'})};
+(async()=>{let count=0;const memory=new MemoryStorage(),browser=L.browserStore(memory);await browser.put(entry);assert.deepStrictEqual(await L.browserStore(memory).get('d-test'),entry);count++;
+assert.deepStrictEqual((await browser.list())[0],entry);count++;
+memory.setItem('ordinary-draft','DO NOT TOUCH');assert.equal((await browser.list()).length,1);count++;
+const validated=L.normalize(entry,m=>m);validated.snapshot.model.nodes[0].name='changed';assert.equal(entry.snapshot.model.nodes[0].name,'A');count++;
+assert.throws(()=>L.normalize({...entry,snapshot:{...entry.snapshot,camera:{x:0,y:0,zoom:0}}},m=>m));count++;
+assert.throws(()=>L.normalize({...entry,name:''},m=>m));count++;
+await assert.rejects(L.browserStore({setItem(){throw Error('QuotaExceededError');}}).put(entry),/Quota/);count++;
+await assert.rejects(L.browserStore({setItem(){},getItem(){return '{}';}}).put(entry),/校验失败/);count++;
+const db={};const sdk={storage:{global:{async getAll(){return {entries:structuredClone(db)};},async get(key){return {value:structuredClone(db[key])};},async set(key,value){db[key]=structuredClone(value);return {ok:true};},async delete(key){delete db[key];return {ok:true};}}}};
+const hana=L.hanaStore(sdk);await hana.put(entry);assert.deepStrictEqual(await L.hanaStore(sdk).get(entry.id),entry);count++;
+assert.deepStrictEqual((await hana.list())[0],entry);count++;
+await assert.rejects(L.hanaStore({storage:{global:{async set(){return {ok:false};}}}}).put(entry),/未确认/);count++;
+await assert.rejects(L.hanaStore({storage:{global:{async set(){return {ok:true};},async get(){return {value:null};}}}}).put(entry),/校验失败/);count++;
+await browser.remove(entry.id);assert.equal(await L.browserStore(memory).get(entry.id),null);count++;
+await browser.put(entry);assert.deepStrictEqual(await browser.get(entry.id),entry);count++;
+await hana.remove(entry.id);assert.equal(await L.hanaStore(sdk).get(entry.id),null);count++;
+await hana.put(entry);assert.deepStrictEqual(await hana.get(entry.id),entry);count++;
+await assert.rejects(L.browserStore({removeItem(){},getItem(){return '{}';}}).remove(entry.id),/仍然存在/);count++;
+await assert.rejects(L.hanaStore({storage:{global:{async delete(){return {ok:false};}}}}).remove(entry.id),/未确认删除/);count++;
+console.log(count+' named-library storage/validation tests passed.');})().catch(e=>{console.error(e);process.exitCode=1;});
